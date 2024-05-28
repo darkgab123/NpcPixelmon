@@ -12,10 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static org.rbg.npcpixelmon.inventory.UpperInventory.*;
+
 public class CreateNPC implements CommandExecutor, Listener {
+
 
     public CreateNPC(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -27,23 +29,18 @@ public class CreateNPC implements CommandExecutor, Listener {
             sender.sendMessage("Este comando só pode ser executado por jogadores.");
             return true;
         }
+        if (args.length == 1) {
+            String npcName = String.join(" ", args);
+            Location npcLocation = player.getLocation();
 
-        if (args.length < 1) {
-            player.sendMessage("Digite /criarnpc (Nome).");
-            return false;
-        } else if (args.length > 1) {
-            player.sendMessage("Digits /criarnpc (Nome).");
+            NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
+            npc.spawn(npcLocation);
+
+            player.sendMessage("NPC " + npcName + " criado com sucesso!");
+
+            return true;
         }
-
-        String npcName = String.join(" ", args);
-        Location npcLocation = player.getLocation();
-
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
-        npc.spawn(npcLocation);
-
-        player.sendMessage("NPC "+ npcName + " criado com sucesso!");
-
-        return true;
+        return false;
     }
 
     @EventHandler
@@ -52,10 +49,9 @@ public class CreateNPC implements CommandExecutor, Listener {
             NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
             if (npc != null) {
                 Player player = event.getPlayer();
-                String npcName = npc.getName();
 
-                Inventory chestInventory = Bukkit.createInventory(null, 27, npcName);
-                player.openInventory(chestInventory);
+                createUpperInventory();
+                player.openInventory(getUpperInventory());
             }
         }
     }

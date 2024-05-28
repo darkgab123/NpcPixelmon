@@ -5,6 +5,6 @@ api-version: 1.16
 description: A plugin to manage NPCs in Pixelmon.
 authors: [Gabriel, Tiago]
 commands:
-  PNpc:
+  criarnpc:
     description: Comando default do Plugin.
-    usage: /npc <subcomando>
+    usage: /criarnpc <SubComando> <Name>
