@@ -1,0 +1,10 @@
+name: NpcPixelmon
+main: org.rbg.npcpixelmon.NpcPixelmon
+version: 1.0
+api-version: 1.16
+description: A plugin to manage NPCs in Pixelmon.
+authors: [Gabriel, Tiago]
+commands:
+  PNpc:
+    description: Comando default do Plugin.
+    usage: /npc <subcomando>
