@@ -1,73 +1,32 @@
 package org.rbg.npcpixelmon.commands;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import static org.rbg.npcpixelmon.inventory.UpperInventory.createUpperInventory;
-import static org.rbg.npcpixelmon.inventory.UpperInventory.getUpperInventory;
+import static org.rbg.npcpixelmon.inventory.store.StoreUpperInventory.createStoreUpperInventory;
+import static org.rbg.npcpixelmon.inventory.store.StoreUpperInventory.getStoreUpperInventory;
 
-public class OpenInventory implements CommandExecutor, Listener {
 
-    public OpenInventory(JavaPlugin plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+public class OpenInventory {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Este comando só pode ser executado por jogadores.");
+    public static boolean CreateOpenCommand(CommandSender sender, Player p, String[] args) {
+        if (!p.hasPermission("NpcPixelmon.admin.open")) {
+            sender.sendMessage("§f§cVocê não tem permissão para abrir o menu.");
             return true;
         }
 
-        if (!player.hasPermission("NpcPixelmon.admin.create")) {
-            player.sendMessage("Você não tem permissão para criar NPCs.");
-            return true;
-        }
-
-        if (args.length < 1 || args.length > 2) {
-            sender.sendMessage("Use: /pnpc <SubComando> <Name>");
-            return true;
-        }
-
-        if (args[0].equalsIgnoreCase("create")) {
-            if (args.length == 2) {
-                String npcName = args[1];
-                Location npcLocation = player.getLocation();
-
-                NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
-                npc.spawn(npcLocation);
-
-                player.sendMessage("NPC " + npcName + " criado com sucesso!");
-
+        if (args.length == 2) {
+            if (args[1].equalsIgnoreCase("Upper")) {
+                createStoreUpperInventory();
+                p.openInventory(getStoreUpperInventory());
+                return true;
+            } else if (args[1].equalsIgnoreCase("Select")) {
+                sender.sendMessage("§f§cO menu não está pronto, tente abrir outro.");
                 return true;
             }
-            sender.sendMessage("Use: /pnpc create <nome>");
-            return true;
         }
+
+        sender.sendMessage("§f§aUse: /pNPC abrir [Upper, Select]");
         return false;
-    }
-
-    @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().hasMetadata("NPC")) {
-            NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
-            if (npc != null) {
-                Player player = event.getPlayer();
-
-                createUpperInventory();
-                player.openInventory(getUpperInventory());
-            }
-        }
     }
 }

@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="NPCPixelmon">
-    <output-path>$PROJECT_DIR$/../../../Biblioteca/Downloads/Server/plugins</output-path>
-    <root id="archive" name="NPCPixelmon.jar">
+  <artifact type="jar" name="NpcPixelmon">
+    <output-path>$PROJECT_DIR$/../../Servidor Minecraft/plugins</output-path>
+    <root id="archive" name="NpcPixelmon.jar">
       <element id="module-output" name="NpcPixelmon" />
     </root>
   </artifact>

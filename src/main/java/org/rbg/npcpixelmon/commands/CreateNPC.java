@@ -4,48 +4,46 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-
-import static org.rbg.npcpixelmon.inventory.UpperInventory.*;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class CreateNPC implements Listener {
 
-    public static boolean CreateNPCCommand(CommandSender sender, Player p, String[] args) {
-        if (!p.hasPermission("NpcPixelmon.admin.create")) {
-            p.sendMessage("Você não tem permissão para criar NPCs.");
-            return true;
-        }
+    private static JavaPlugin plugin;
 
-        if (args.length == 2) {
-            String npcName = args[1];
-            Location npcLocation = p.getLocation();
-
-            NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
-            npc.spawn(npcLocation);
-
-            p.sendMessage("NPC " + npcName + " criado com sucesso!");
-
-            return true;
-        }
-
-        sender.sendMessage("Use: /pnpc create <nome>");
-        return false;
+    public CreateNPC(JavaPlugin p) {
+        plugin = p;
     }
 
-    @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().hasMetadata("NPC")) {
-            NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
-            if (npc != null) {
-                Player player = event.getPlayer();
+    public static boolean CreateNPCCommand(CommandSender sender, Player p, String[] args) {
+        if (!p.hasPermission("NpcPixelmon.admin.create")) {
+            sender.sendMessage("§f§cVocê não tem permissão para criar NPCs.");
+            return true;
+        }
 
-                createUpperInventory();
-                player.openInventory(getUpperInventory());
+        if (args.length == 3) {
+            if (args[2].equalsIgnoreCase("Upper")) {
+                String npcName = args[1];
+                Location npcLocation = p.getLocation();
+
+                NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
+                FileConfiguration config = plugin.getConfig();
+                config.set("NPCs." + npc.getId() + ".Inventory", args[2]);
+                plugin.saveConfig();
+
+                npc.spawn(npcLocation);
+
+
+                sender.sendMessage("§f§aNPC " + npcName + " criado com sucesso!");
+
+                return true;
             }
         }
+
+        sender.sendMessage("§f§aUse: /pNPC criar <Nome do NPC> [Upper, Select]");
+        return false;
     }
 }

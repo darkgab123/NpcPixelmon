@@ -11,14 +11,13 @@ public final class NpcPixelmon extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("Plugin CustomNPC ativado!");
-        try {
-            Objects.requireNonNull(getCommand("pnpc")).setExecutor(new CommandMain(this));
-            getServer().getPluginManager().registerEvents(new CreateNPC(), this);
-            getServer().getPluginManager().registerEvents(new InventoryListener(), this);
-        } catch (NullPointerException e) {
-            getLogger().warning("O comando 'criarnpc' não foi encontrado! Verifique se está definido corretamente no plugin.yml.");
-        }
+        getLogger().info("§f§aPlugin CustomNPC ativado!");
+        saveDefaultConfig();
+
+
+        Objects.requireNonNull(getCommand("pnpc")).setExecutor(new CommandMain(this));
+        getServer().getPluginManager().registerEvents(new CreateNPC(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
     }
 
     @Override
