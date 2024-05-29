@@ -3,9 +3,19 @@ main: org.rbg.npcpixelmon.NpcPixelmon
 version: 1.0
 api-version: 1.16
 description: A plugin to manage NPCs in Pixelmon.
-authors: [Gabriel, Tiago]
+authors: [ Gabriel, Tiago ]
 commands:
-  pnpc:
-    description: Comando default do Plugin.
+  np:
+    description: Comando padrão do NpcPixelmon
     permission: pnpc.admin
-    permission-message: Você não tem permissão!
+    permission-message: §f§cVocê não tem acesso a esse comando.
+    subcommands:
+      Criar:
+        description: Comando para Criar NPC.
+        permission: npcpixelmon.create
+      Deletar:
+        description: Comando para Deletar NPC.
+        permission: npcpixelmon.delete
+      Abrir:
+        description: Comando para Abrir NPC.
+        permission: npcpixelmon.open

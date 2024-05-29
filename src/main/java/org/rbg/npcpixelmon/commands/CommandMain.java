@@ -7,43 +7,29 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import static org.rbg.npcpixelmon.commands.CreateNPC.CreateNPCCommand;
-import static org.rbg.npcpixelmon.commands.OpenInventory.CreateOpenCommand;
+import org.rbg.npcpixelmon.commands.Messages.CommandHelp;
 
 public class CommandMain implements CommandExecutor, Listener {
-
     public CommandMain(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("§f§cEste comando só pode ser executado por jogadores.");
-            return true;
+        if (sender instanceof Player player) {
+            if (args.length == 0) {
+                return CommandHelp.helpGeneral(sender);
+            } else if (args[0].equalsIgnoreCase("criar") && player.hasPermission("npcpixelmon.create")) {
+                return CreateNPC.CreateNPCCommand(sender, player, args);
+            } else if (args[0].equalsIgnoreCase("abrir") && player.hasPermission("npcpixelmon.open")) {
+                return OpenInventory.CreateOpenCommand(sender, player, args);
+            } else if (args[0].equalsIgnoreCase("deletar") && player.hasPermission("npcpixelmon.delete")) {
+                sender.sendMessage("§f§cErro: §4Esse comando ainda não está funcionando!");
+                return true;
+            } else {
+                return CommandHelp.helpGeneral(sender);
+            }
+        } else {
+            return false;
         }
-
-        if (!player.hasPermission("NpcPixelmon.admin")) {
-            sender.sendMessage("§f§cVocê não tem permissão para usar comandos de administrador.");
-            return true;
-        }
-
-        if (args.length < 1 || args.length > 3) {
-            sender.sendMessage("§f§aUse: /pnpc <SubComando>");
-            return true;
-        }
-
-        if (args[0].equalsIgnoreCase("criar")) {
-            return CreateNPCCommand(sender, player, args);
-        }
-
-        if (args[0].equalsIgnoreCase("abrir")) {
-            return CreateOpenCommand(sender, player, args);
-        }
-
-        sender.sendMessage("§f§aUse: /pNPC [Criar, Abrir]");
-        return false;
     }
-
 }

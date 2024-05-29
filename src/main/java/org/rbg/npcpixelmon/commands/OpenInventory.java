@@ -2,31 +2,29 @@ package org.rbg.npcpixelmon.commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import static org.rbg.npcpixelmon.inventory.store.StoreUpperInventory.createStoreUpperInventory;
-import static org.rbg.npcpixelmon.inventory.store.StoreUpperInventory.getStoreUpperInventory;
-
+import org.rbg.npcpixelmon.commands.Messages.CommandHelp;
+import org.rbg.npcpixelmon.inventory.PokeInventory;
+import org.rbg.npcpixelmon.inventory.UpperInventory;
 
 public class OpenInventory {
+    public OpenInventory() {
+    }
 
     public static boolean CreateOpenCommand(CommandSender sender, Player p, String[] args) {
-        if (!p.hasPermission("NpcPixelmon.admin.open")) {
-            sender.sendMessage("§f§cVocê não tem permissão para abrir o menu.");
-            return true;
-        }
-
         if (args.length == 2) {
             if (args[1].equalsIgnoreCase("Upper")) {
-                createStoreUpperInventory();
-                p.openInventory(getStoreUpperInventory());
+                UpperInventory.createUpperInventory();
+                p.openInventory(UpperInventory.getUpperInventory());
                 return true;
-            } else if (args[1].equalsIgnoreCase("Select")) {
-                sender.sendMessage("§f§cO menu não está pronto, tente abrir outro.");
+            }
+
+            if (args[1].equalsIgnoreCase("Poke")) {
+                PokeInventory.createPokeInventory();
+                p.openInventory(PokeInventory.getPokeInventory());
                 return true;
             }
         }
 
-        sender.sendMessage("§f§aUse: /pNPC abrir [Upper, Select]");
-        return false;
+        return CommandHelp.helpOpen(sender);
     }
 }

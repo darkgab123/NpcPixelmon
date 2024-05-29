@@ -12,10 +12,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.rbg.npcpixelmon.inventory.store.StoreUpperInventory.*;
+import static org.rbg.npcpixelmon.inventory.PokeInventory.createPokeInventory;
+import static org.rbg.npcpixelmon.inventory.PokeInventory.getPokeInventory;
+import static org.rbg.npcpixelmon.inventory.UpperInventory.createUpperInventory;
+import static org.rbg.npcpixelmon.inventory.UpperInventory.getUpperInventory;
 
 public class InventoryListener implements Listener {
-
     private static JavaPlugin plugin;
 
     public InventoryListener(JavaPlugin p) {
@@ -24,9 +26,6 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-
-        Player player = (Player) event.getWhoClicked();
-
         if (event.getView().getTitle().equals("Upador de Ev e Level")) {
             event.setCancelled(true);
         }
@@ -34,19 +33,25 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onNPCRightClick(NPCRightClickEvent event) {
+        Map<String, Object> configValues = getAllConfigValues();
         NPC npc = event.getNPC();
         Player player = event.getClicker();
 
-        if (npc.getId() == 3) {
-            createStoreUpperInventory();
-            player.openInventory(getStoreUpperInventory());
-            plugin.getLogger().info(getAllConfigValues());
+        for (Map.Entry<String, Object> entry : configValues.entrySet()) {
+            if (entry.getKey().contains(String.valueOf(npc.getId()))) {
+                if (String.valueOf(entry.getValue()).equalsIgnoreCase("Upper")) {
+                    createUpperInventory();
+                    player.openInventory(getUpperInventory());
+                } else if (String.valueOf(entry.getValue()).equalsIgnoreCase("Poke")) {
+                    createPokeInventory();
+                    player.openInventory(getPokeInventory());
+                }
+            }
         }
     }
 
-    public String getAllConfigValues() {
+    public Map<String, Object> getAllConfigValues() {
         Map<String, Object> configValues = new HashMap<>();
-        String values = "";
 
         FileConfiguration config = plugin.getConfig();
 
@@ -54,12 +59,6 @@ public class InventoryListener implements Listener {
             Object value = config.get(key);
             configValues.put(key, value);
         }
-
-        for (Map.Entry<String, Object> entry : configValues.entrySet()) {
-            values = "Key: " + entry.getKey() + ", Value: " + entry.getValue();
-        }
-
-        return values;
+        return configValues;
     }
-
 }
