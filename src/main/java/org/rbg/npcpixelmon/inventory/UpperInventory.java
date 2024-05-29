@@ -1,13 +1,17 @@
 package org.rbg.npcpixelmon.inventory;
 
-import com.pixelmonmod.pixelmon.api.registries.PixelmonItems;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.inventory.meta.ItemMeta;
+import static org.rbg.npcpixelmon.inventory.itens.EvAtkItem.CreateEvAtkItem;
+import static org.rbg.npcpixelmon.inventory.itens.EvDefItem.CreateEvDefItem;
+import static org.rbg.npcpixelmon.inventory.itens.EvHpItem.CreateEvHPItem;
+import static org.rbg.npcpixelmon.inventory.itens.EvSpAtkItem.CreateEvSpAtkItem;
+import static org.rbg.npcpixelmon.inventory.itens.EvSpDefItem.CreateEvSpDefItem;
+import static org.rbg.npcpixelmon.inventory.itens.EvSpdItem.CreateEvSpeedItem;
+import static org.rbg.npcpixelmon.inventory.itens.GlassItem.CreateGlassItem;
+import static org.rbg.npcpixelmon.inventory.itens.LevelItem.CreateEvLevelItem;
 
 public class UpperInventory extends JavaPlugin implements Listener {
 
@@ -20,16 +24,16 @@ public class UpperInventory extends JavaPlugin implements Listener {
     }
 
     public static void createUpperInventory() {
-
         if (inventory == null) {
             inventory = Bukkit.createInventory(null, 9 * 3, "Upador de Ev e Level");
-
-            ItemStack Item = new ItemStack(Material.ACACIA_DOOR);
-            ItemMeta meta = Item.getItemMeta();
-            assert meta != null;
-            meta.setDisplayName("Item Fixo");
-            Item.setItemMeta(meta);
-            inventory.setItem(13, Item);
+            CreateEvLevelItem();
+            CreateEvHPItem();
+            CreateEvAtkItem();
+            CreateEvDefItem();
+            CreateEvSpAtkItem();
+            CreateEvSpDefItem();
+            CreateEvSpeedItem();
+            CreateGlassItem();
         }
     }
 

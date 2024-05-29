@@ -4,7 +4,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.rbg.npcpixelmon.commands.CreateNPC;
 import org.rbg.npcpixelmon.listener.InventoryListener;
 
-import javax.swing.event.MenuListener;
 import java.util.Objects;
 
 public final class NpcPixelmon extends JavaPlugin {

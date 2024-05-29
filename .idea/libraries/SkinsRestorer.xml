@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SkinsRestorer">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/SkinsRestorer.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
