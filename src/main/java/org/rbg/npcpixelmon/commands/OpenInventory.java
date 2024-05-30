@@ -10,7 +10,7 @@ public class OpenInventory {
     public OpenInventory() {
     }
 
-    public static boolean CreateOpenCommand(CommandSender sender, Player p, String[] args) {
+    public static boolean createOpenCommand(CommandSender sender, Player p, String[] args) {
         if (args.length == 2) {
             if (args[1].equalsIgnoreCase("Upper")) {
                 UpperInventory.createUpperInventory();

@@ -18,7 +18,7 @@ public class CreateNPC implements Listener {
         plugin = p;
     }
 
-    public static boolean CreateNPCCommand(CommandSender sender, Player p, String[] args) {
+    public static boolean createNPCCommand(CommandSender sender, Player p, String[] args) {
         if (args.length != 3 || !args[2].equalsIgnoreCase("Upper") && !args[2].equalsIgnoreCase("Poke")) {
             return CommandHelp.helpCreate(sender);
         } else {
@@ -26,7 +26,6 @@ public class CreateNPC implements Listener {
             NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
             FileConfiguration config = plugin.getConfig();
             config.set("NPCs." + npc.getId() + ".Inventory", args[2]);
-            plugin.saveConfig();
             npc.spawn(p.getLocation());
             LookClose lookClose = npc.getOrAddTrait(LookClose.class);
             lookClose.setRange(10.0);

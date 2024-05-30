@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.rbg.npcpixelmon.commands.CommandMain;
 import org.rbg.npcpixelmon.commands.CreateNPC;
+import org.rbg.npcpixelmon.commands.DeleteNPC;
 import org.rbg.npcpixelmon.listener.InventoryListener;
 
 import java.util.Arrays;
@@ -21,6 +22,7 @@ public final class NpcPixelmon extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("np")).setExecutor(new CommandMain(this));
         Objects.requireNonNull(this.getCommand("np")).setTabCompleter(this);
         this.getServer().getPluginManager().registerEvents(new CreateNPC(this), this);
+        this.getServer().getPluginManager().registerEvents(new DeleteNPC(this), this);
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
     }
 
@@ -35,5 +37,6 @@ public final class NpcPixelmon extends JavaPlugin {
     }
 
     public void onDisable() {
+        saveConfig();
     }
 }

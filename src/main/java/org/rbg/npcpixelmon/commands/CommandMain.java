@@ -19,12 +19,11 @@ public class CommandMain implements CommandExecutor, Listener {
             if (args.length == 0) {
                 return CommandHelp.helpGeneral(sender);
             } else if (args[0].equalsIgnoreCase("criar") && player.hasPermission("npcpixelmon.create")) {
-                return CreateNPC.CreateNPCCommand(sender, player, args);
+                return CreateNPC.createNPCCommand(sender, player, args);
             } else if (args[0].equalsIgnoreCase("abrir") && player.hasPermission("npcpixelmon.open")) {
-                return OpenInventory.CreateOpenCommand(sender, player, args);
+                return OpenInventory.createOpenCommand(sender, player, args);
             } else if (args[0].equalsIgnoreCase("deletar") && player.hasPermission("npcpixelmon.delete")) {
-                sender.sendMessage("§f§cErro: §4Esse comando ainda não está funcionando!");
-                return true;
+                return DeleteNPC.deleteNPCCommand(sender, player, args);
             } else {
                 return CommandHelp.helpGeneral(sender);
             }
