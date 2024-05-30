@@ -30,9 +30,9 @@ public final class NpcPixelmon extends JavaPlugin {
         if (args.length == 1) {
             return Arrays.asList("criar", "deletar", "abrir");
         } else if (args.length == 3 && args[0].equalsIgnoreCase("criar")) {
-            return Arrays.asList("Upper", "Poke");
+            return List.of("Poke");
         } else {
-            return args.length == 2 && args[0].equalsIgnoreCase("abrir") ? Arrays.asList("Upper", "Poke") : Collections.emptyList();
+            return args.length == 2 && args[0].equalsIgnoreCase("abrir") ? List.of("Poke") : Collections.emptyList();
         }
     }
 

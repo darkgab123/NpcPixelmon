@@ -1,59 +1,44 @@
 package org.rbg.npcpixelmon.inventory;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.rbg.npcpixelmon.inventory.variables.VariablesInventory;
+
 
 public class UpperInventory implements Listener {
-    private static Inventory inventory;
+    public static VariablesInventory invVariables = new VariablesInventory();
 
-    public UpperInventory() {
-    }
-
-    public static void createUpperInventory() {
-        if (inventory == null) {
-            inventory = Bukkit.createInventory(null, 27, "Upador de Ev e Level");
+    public static Boolean upperInventory(Player p) {
+        if (invVariables.getInventory() == null) {
+            invVariables.setInvName("Upador de Ev e Level");
+            invVariables.setInventory(Bukkit.createInventory(null, 27, invVariables.getInvName()));
             createItems();
         }
-
-    }
-
-    public static Inventory getUpperInventory() {
-        return inventory;
+        p.openInventory(invVariables.getInventory());
+        return true;
     }
 
     private static void createItems() {
-        createItem("PIXELMON_RARE_CANDY", 1, "Level", 10);
-        createItem("PIXELMON_POWER_BRACER", 1, "Ev de Attack", 11);
-        createItem("PIXELMON_POWER_BELT", 1, "Ev de Defesa", 12);
-        createItem("PIXELMON_POWER_WEIGHT", 2, "Ev de HP", 13);
-        createItem("PIXELMON_POWER_LENS", 1, "Ev de Special Attack", 14);
-        createItem("PIXELMON_POWER_BAND", 1, "Ev de Special Defesa", 15);
-        createItem("PIXELMON_POWER_ANKLET", 1, "Ev de Speed", 16);
+        invVariables.createItem("RED_STAINED_GLASS_PANE", 1, "VOLTAR", 0, invVariables.getInventory());
+
+        invVariables.createItem("PIXELMON_RARE_CANDY", 1, "Level", 10, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_BRACER", 1, "Ev de Attack", 11, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_BELT", 1, "Ev de Defesa", 12, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_WEIGHT", 2, "Ev de HP", 13, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_LENS", 1, "Ev de Special Attack", 14, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_BAND", 1, "Ev de Special Defesa", 15, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POWER_ANKLET", 1, "Ev de Speed", 16, invVariables.getInventory());
 
         int i;
-        for(i = 0; i < 10; ++i) {
-            createItem("WHITE_STAINED_GLASS_PANE", 1, "", i);
+        for(i = 1; i < 10; ++i) {
+            invVariables.createItem("WHITE_STAINED_GLASS_PANE", 1, "", i, invVariables.getInventory());
         }
 
         for(i = 17; i < 27; ++i) {
-            createItem("WHITE_STAINED_GLASS_PANE", 1, "", i);
+            invVariables.createItem("WHITE_STAINED_GLASS_PANE", 1, "", i, invVariables.getInventory());
         }
 
     }
 
-    private static void createItem(String item, int amount, String displayName, int slot) {
-        Material material = Material.valueOf(item);
-        ItemStack itemStack = new ItemStack(material, amount);
-        ItemMeta meta = itemStack.getItemMeta();
-
-        assert meta != null;
-
-        meta.setDisplayName(displayName);
-        itemStack.setItemMeta(meta);
-        getUpperInventory().setItem(slot, itemStack);
-    }
 }

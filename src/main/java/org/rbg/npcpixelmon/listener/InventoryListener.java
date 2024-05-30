@@ -7,15 +7,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.rbg.npcpixelmon.inventory.UpperInventory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.rbg.npcpixelmon.inventory.PokeInventory.createPokeInventory;
-import static org.rbg.npcpixelmon.inventory.PokeInventory.getPokeInventory;
-import static org.rbg.npcpixelmon.inventory.UpperInventory.createUpperInventory;
-import static org.rbg.npcpixelmon.inventory.UpperInventory.getUpperInventory;
+import static org.rbg.npcpixelmon.inventory.PokeInventory.*;
+import static org.rbg.npcpixelmon.inventory.UpperInventory.*;
 
 public class InventoryListener implements Listener {
     private static JavaPlugin plugin;
@@ -26,8 +26,38 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+
         if (event.getView().getTitle().equals("Upador de Ev e Level")) {
             event.setCancelled(true);
+            ItemStack clickedItem = event.getCurrentItem();
+
+            if (clickedItem == null || !clickedItem.hasItemMeta()) {
+                return;
+            }
+
+            if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName() &&
+                    clickedItem.getItemMeta().getDisplayName().equals("VOLTAR")) {
+                Player player = (Player) event.getWhoClicked();
+
+                pokeInventory(player);
+            }
+
+        }
+        else if(event.getView().getTitle().equals("Pokemons")){
+            event.setCancelled(true);
+
+            ItemStack clickedItem = event.getCurrentItem();
+
+            if (clickedItem == null || !clickedItem.hasItemMeta()) {
+                return;
+            }
+
+            if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasDisplayName() &&
+                    clickedItem.getItemMeta().getDisplayName().equals("POKEMON999")) {
+                Player player = (Player) event.getWhoClicked();
+
+                upperInventory(player);
+            }
         }
     }
 
@@ -40,11 +70,9 @@ public class InventoryListener implements Listener {
         for (Map.Entry<String, Object> entry : configValues.entrySet()) {
             if (entry.getKey().contains(String.valueOf(npc.getId()))) {
                 if (String.valueOf(entry.getValue()).equalsIgnoreCase("Upper")) {
-                    createUpperInventory();
-                    player.openInventory(getUpperInventory());
+                    upperInventory(player);
                 } else if (String.valueOf(entry.getValue()).equalsIgnoreCase("Poke")) {
-                    createPokeInventory();
-                    player.openInventory(getPokeInventory());
+                    pokeInventory(player);
                 }
             }
         }

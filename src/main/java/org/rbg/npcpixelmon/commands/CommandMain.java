@@ -16,7 +16,7 @@ public class CommandMain implements CommandExecutor, Listener {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
-            if (args.length == 0) {
+            if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
                 return CommandHelp.helpGeneral(sender);
             } else if (args[0].equalsIgnoreCase("criar") && player.hasPermission("npcpixelmon.create")) {
                 return CreateNPC.createNPCCommand(sender, player, args);

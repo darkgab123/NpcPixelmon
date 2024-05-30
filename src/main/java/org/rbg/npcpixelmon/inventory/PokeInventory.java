@@ -2,54 +2,44 @@ package org.rbg.npcpixelmon.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.rbg.npcpixelmon.inventory.variables.VariablesInventory;
 
 public class PokeInventory implements Listener {
-    private static Inventory inventory;
+    public static VariablesInventory invVariables = new VariablesInventory();
 
-    public static void createPokeInventory() {
-        if (inventory == null) {
-            inventory = Bukkit.createInventory(null, 27, "Upador de Ev e Level");
+    public static Boolean pokeInventory(Player p) {
+        if (invVariables.getInventory() == null) {
+            invVariables.setInvName("Pokemons");
+            invVariables.setInventory(Bukkit.createInventory(null, 27, invVariables.getInvName()));
             createItems();
         }
-    }
-
-    public static Inventory getPokeInventory() {
-        return inventory;
+        p.openInventory(invVariables.getInventory());
+        return true;
     }
 
     private static void createItems() {
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 10);
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 11);
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 12);
-        createItem("PIXELMON_POKE_BALL", 2, "ESCOLHA APORRA DO POKEFODASE", 13);
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 14);
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 15);
-        createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 16);
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "POKEMON999", 10, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 11, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 12, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_POKE_BALL", 2, "POKEBOLA", 13, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 14, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 15, invVariables.getInventory());
+        invVariables.createItem("PIXELMON_PIXELMON_SPRITE", 1, "", 16, invVariables.getInventory());
 
         int i;
         for(i = 0; i < 10; ++i) {
-            createItem("WHITE_STAINED_GLASS_PANE", 1, "", i);
+            invVariables.createItem("WHITE_STAINED_GLASS_PANE", 1, "", i, invVariables.getInventory());
         }
 
         for(i = 17; i < 27; ++i) {
-            createItem("WHITE_STAINED_GLASS_PANE", 1, "", i);
+            invVariables.createItem("WHITE_STAINED_GLASS_PANE", 1, "", i, invVariables.getInventory());
         }
 
     }
 
-    private static void createItem(String item, int amount, String displayName, int slot) {
-        Material material = Material.valueOf(item);
-        ItemStack itemStack = new ItemStack(material, amount);
-        ItemMeta meta = itemStack.getItemMeta();
-
-        assert meta != null;
-
-        meta.setDisplayName(displayName);
-        itemStack.setItemMeta(meta);
-        getPokeInventory().setItem(slot, itemStack);
-    }
 }
